@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import Layout from "./components/Layout";
+import logo from "./assets/dashboard.png";
+import Auth from "./components/Auth";
+import { useState } from "react";
 
-function App() {
+const App = () => {
+  const [auth, setAuth] = useState(false);
+  const [open, setOpen] = useState(true);
+
+  const checkUser = (id) => {
+    console.log("id", id);
+    if (id === "1234") {
+      setAuth(true);
+      setOpen(false);
+    } else {
+      setOpen(false);
+      setTimeout(() => {
+        setOpen(true);
+      }, 200);
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {auth ? (
+        <Layout logo={logo}>
+          Content
+        </Layout>
+      ) : (
+        <Auth open={open} isOpen={setOpen} authUser={checkUser} />
+      )}
+    </>
   );
-}
+};
 
 export default App;
