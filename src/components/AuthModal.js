@@ -3,7 +3,7 @@ import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { UserIcon } from "@heroicons/react/outline";
 
-export default function Auth(props) {
+export default function AuthModal(props) {
   const cancelButtonRef = useRef(null);
 
   const [formValues, updateFormValues] = useState({

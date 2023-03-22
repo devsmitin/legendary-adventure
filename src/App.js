@@ -1,10 +1,13 @@
-import Layout from "./components/Layout";
-import logo from "./assets/dashboard.png";
-import Auth from "./components/Auth";
 import { useState } from "react";
+import { AppContextProvider } from "./AppContext";
+import Layout from "./components/Layout";
+import AuthModal from "./components/AuthModal";
+import Todo from "./components/Todo";
+
+import logo from "./assets/dashboard.png";
 
 const App = () => {
-  const [auth, setAuth] = useState(false);
+  const [auth, setAuth] = useState(true);
   const [open, setOpen] = useState(true);
 
   const checkUser = (id) => {
@@ -21,15 +24,16 @@ const App = () => {
   };
 
   return (
-    <>
+    <AppContextProvider>
       {auth ? (
         <Layout logo={logo}>
-          Content
+          {/* <Todo /> */}
+          test
         </Layout>
       ) : (
-        <Auth open={open} isOpen={setOpen} authUser={checkUser} />
+        <AuthModal open={open} isOpen={setOpen} authUser={checkUser} />
       )}
-    </>
+    </AppContextProvider>
   );
 };
 
