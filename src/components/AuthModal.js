@@ -1,9 +1,8 @@
-/* This example requires Tailwind CSS v2.0+ */
 import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { UserIcon } from "@heroicons/react/outline";
 
-export default function AuthModal(props) {
+export default function AuthModal({ modalState, modalToggle, checkUser }) {
   const cancelButtonRef = useRef(null);
 
   const [formValues, updateFormValues] = useState({
@@ -15,12 +14,12 @@ export default function AuthModal(props) {
   };
 
   return (
-    <Transition.Root show={props.open} as={Fragment}>
+    <Transition.Root show={modalState} as={Fragment}>
       <Dialog
         as="div"
         className="fixed z-10 inset-0 overflow-y-auto"
         initialFocus={cancelButtonRef}
-        onClose={props.isOpen}
+        onClose={modalToggle}
       >
         <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
@@ -93,7 +92,7 @@ export default function AuthModal(props) {
                   onClick={() => {
                     formValues.userID !== "" &&
                       formValues.userID.length > 3 &&
-                      props.authUser(formValues.userID);
+                      checkUser(formValues.userID);
                   }}
                 >
                   Login using ID
@@ -101,7 +100,7 @@ export default function AuthModal(props) {
                 <button
                   type="button"
                   className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                  onClick={() => props.isOpen(false)}
+                  onClick={() => modalToggle(false)}
                   ref={cancelButtonRef}
                 >
                   New user? Create account

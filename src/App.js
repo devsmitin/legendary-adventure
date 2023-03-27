@@ -1,38 +1,62 @@
-import { useState } from "react";
-import { AppContextProvider } from "./AppContext";
+import {
+  AppContextProvider,
+  useAppContext,
+  useModalContext,
+} from "./AppContext";
 import Layout from "./components/Layout";
 import AuthModal from "./components/AuthModal";
-import Todo from "./components/Todo";
+// import Todo from "./components/Todo";
 
 import logo from "./assets/dashboard.png";
+import { randomUsername } from "./helper";
+import { useState } from "react";
 
-const App = () => {
-  const [auth, setAuth] = useState(true);
-  const [open, setOpen] = useState(true);
+const AppChildren = () => {
+  const modalContext = useModalContext();
+  let { modalOpen, modalStateHandler } = modalContext;
 
-  const checkUser = (id) => {
+  const appContext = useAppContext();
+  let { user, userStateHandler } = appContext;
+
+  const [authState, authStateHandler] = useState(false);
+
+  const addNewUser = () => {
+    // there is no active/inactive user present in system
+    const newUser = randomUsername();
+    console.log("Local user generated...", newUser);
+    // userStateHandler(newUser);
+  };
+
+  const authUser = (id) => {
     console.log("id", id);
-    if (id === "1234") {
-      setAuth(true);
-      setOpen(false);
-    } else {
-      setOpen(false);
-      setTimeout(() => {
-        setOpen(true);
-      }, 200);
+    if (false) {
+      addNewUser();
     }
   };
 
+  let view = (
+    <AuthModal
+      modalState={modalOpen}
+      modalToggle={modalStateHandler}
+      checkUser={authUser}
+    />
+  );
+
+  if (authState) {
+    view = (
+      <Layout logo={logo}>
+        {/* <Todo /> */}
+        test
+      </Layout>
+    );
+  }
+  return view;
+};
+
+const App = () => {
   return (
     <AppContextProvider>
-      {auth ? (
-        <Layout logo={logo}>
-          {/* <Todo /> */}
-          test
-        </Layout>
-      ) : (
-        <AuthModal open={open} isOpen={setOpen} authUser={checkUser} />
-      )}
+      <AppChildren />
     </AppContextProvider>
   );
 };
